@@ -47,7 +47,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
 
     const combined = finalTranscript + interim;
 
-    // ✅ デバッグ表示
+    // ✅ デバッグ表示(F12で表示)
     console.log("音声認識結果:", event.results);
     console.log("全文:", finalTranscript);
     console.log("暫定:", interim);
