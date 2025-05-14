@@ -1,0 +1,20 @@
+{
+  "name": "音声認識文字起こし議事録ツール",
+  "short_name": "議事録",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4caf50",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "768x768",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-small.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

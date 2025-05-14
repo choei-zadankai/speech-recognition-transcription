@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>音声認識文字起こし議事録ツール</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>音声認識文字起こし議事録</h1>
+    <button id="start-btn">録音開始</button>
+    <button id="stop-btn" disabled>録音停止</button>
+    <textarea id="transcript" placeholder="ここに文字起こしされます…"></textarea>
+    <button id="save-btn">テキストをダウンロード</button>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js')
+        .then(() => console.log('Service Worker registered'));
+    }
+  </script>
+</body>
+</html>
