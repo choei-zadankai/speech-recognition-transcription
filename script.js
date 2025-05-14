@@ -5,6 +5,7 @@ const conversionMap = {
   "長栄": "町栄",
   "ちょうえい": "町栄",
   "がっかいか": "学会歌"
+  "じょうしょうけん": "常勝県"
 };
 
 function applyConversion(text) {
