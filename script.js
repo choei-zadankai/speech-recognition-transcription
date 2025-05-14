@@ -39,6 +39,7 @@ function createRecognition() {
 
 // ✅ 録音開始
 startBtn.onclick = () => {
+  alert("録音を開始します 1秒待ってからお話ください");
   finalTranscript = '';
   startTime = Date.now();
   recognizing = true;
