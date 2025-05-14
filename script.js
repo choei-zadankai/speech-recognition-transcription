@@ -1,7 +1,8 @@
+// ✅ 読み替えマップ（必要に応じて追加）
 const conversionMap = {
+  "上映": "町栄",
   "町営": "町栄",
   "長栄": "町栄",
-  "上映": "町栄",
   "ちょうえい": "町栄",
   "がっかいか": "学会歌"
 };
@@ -14,65 +15,71 @@ function applyConversion(text) {
   return text;
 }
 
+// ✅ グローバル変数
 let recognition;
 let recognizing = false;
 let startTime = 0;
+let finalTranscript = '';
 
+// ✅ DOM取得
 const startBtn = document.getElementById('start-btn');
 const stopBtn = document.getElementById('stop-btn');
 const transcriptArea = document.getElementById('transcript');
 const saveBtn = document.getElementById('save-btn');
 
-if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+// ✅ 毎回初期化する認識オブジェクト生成関数
+function createRecognition() {
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  recognition = new SpeechRecognition();
-  recognition.lang = 'ja-JP';
-  recognition.continuous = true;
-  recognition.interimResults = true;
+  const r = new SpeechRecognition();
+  r.lang = 'ja-JP';
+  r.continuous = true;
+  r.interimResults = true;
+  return r;
+}
 
-  let finalTranscript = '';
+// ✅ 録音開始
+startBtn.onclick = () => {
+  finalTranscript = '';
+  startTime = Date.now();
+  recognizing = true;
+  startBtn.disabled = true;
+  stopBtn.disabled = false;
+
+  recognition = createRecognition();
 
   recognition.onresult = event => {
-  const elapsed = Date.now() - startTime;
-  if (elapsed < 1000) return;
+    const elapsed = Date.now() - startTime;
+    if (elapsed < 1000) return; // 開始1秒以内の認識はスキップ！
 
-  let interim = '';
-  for (let i = event.resultIndex; i < event.results.length; ++i) {
-    const transcript = event.results[i][0].transcript;
-    if (event.results[i].isFinal) {
-      finalTranscript += applyConversion(transcript) + '。';
-    } else {
-      interim += transcript;
+    let interim = '';
+    for (let i = event.resultIndex; i < event.results.length; ++i) {
+      const transcript = event.results[i][0].transcript;
+      if (event.results[i].isFinal) {
+        finalTranscript += applyConversion(transcript) + '。';
+      } else {
+        interim += transcript;
+      }
     }
-  }
 
-  transcriptArea.value = finalTranscript + applyConversion(interim);
-};
+    transcriptArea.value = finalTranscript + applyConversion(interim);
+  };
 
   recognition.onend = () => {
     if (recognizing) recognition.start();
   };
 
-  startBtn.onclick = () => {
-    alert("録音を開始します 1秒待ってから話し始めてください")
-    finalTranscript = '';
-    recognition.start();
-    recognizing = true;
-    startTime = Date.now();
-    startBtn.disabled = true;
-    stopBtn.disabled = false;
-  };
+  recognition.start();
+};
 
-  stopBtn.onclick = () => {
-    recognition.stop();
-    recognizing = false;
-    startBtn.disabled = false;
-    stopBtn.disabled = true;
-  };
-} else {
-  alert("音声認識APIが使えない環境です");
-}
+// ✅ 録音停止
+stopBtn.onclick = () => {
+  recognition.stop();
+  recognizing = false;
+  startBtn.disabled = false;
+  stopBtn.disabled = true;
+};
 
+// ✅ 保存（DL）ボタン
 saveBtn.onclick = () => {
   const text = transcriptArea.value;
   const blob = new Blob([text], { type: 'text/plain' });
