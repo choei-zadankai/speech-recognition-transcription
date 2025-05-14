@@ -1,8 +1,12 @@
-// ✅ 読み替えマップ
+// ✅ 読み替えマップ（実際の認識に合わせて調整）
 const conversionMap = {
-  "ちょうえい": "町栄",
   "町営": "町栄",
-  "がっかいか": "学会歌"
+  "長栄": "町栄",
+  "超栄": "町栄",
+  "ちょうえい": "町栄",
+  "がっかいか": "学会歌",
+  "がっかい歌": "学会歌",
+  "がっ会歌": "学会歌"
 };
 
 function applyConversion(text) {
@@ -42,6 +46,14 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
     }
 
     const combined = finalTranscript + interim;
+
+    // ✅ デバッグ表示
+    console.log("音声認識結果:", event.results);
+    console.log("全文:", finalTranscript);
+    console.log("暫定:", interim);
+    console.log("変換前:", combined);
+
+    // ✅ 読み替えしてから表示
     transcriptArea.value = applyConversion(combined);
   };
 
