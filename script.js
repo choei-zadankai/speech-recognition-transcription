@@ -1,6 +1,7 @@
 const conversionMap = {
   "町営": "町栄",
   "長栄": "町栄",
+  "上映": "町栄",
   "ちょうえい": "町栄",
   "がっかいか": "学会歌"
 };
@@ -15,6 +16,7 @@ function applyConversion(text) {
 
 let recognition;
 let recognizing = false;
+let startTime = 0;
 
 const startBtn = document.getElementById('start-btn');
 const stopBtn = document.getElementById('stop-btn');
@@ -31,6 +33,10 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   let finalTranscript = '';
 
   recognition.onresult = event => {
+  const elapsed = Date.now() - startTime;
+  if (elapsed < 1000) return;
+
+    
   let interim = '';
   for (let i = event.resultIndex; i < event.results.length; ++i) {
     const transcript = event.results[i][0].transcript;
@@ -49,9 +55,11 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   };
 
   startBtn.onclick = () => {
+    alert("録音を開始します 1秒待ってから話し始めてください")
     finalTranscript = '';
     recognition.start();
     recognizing = true;
+    startTime = Date.now();
     startBtn.disabled = true;
     stopBtn.disabled = false;
   };
