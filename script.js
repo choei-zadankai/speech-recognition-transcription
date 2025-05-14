@@ -36,7 +36,6 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   const elapsed = Date.now() - startTime;
   if (elapsed < 1000) return;
 
-    
   let interim = '';
   for (let i = event.resultIndex; i < event.results.length; ++i) {
     const transcript = event.results[i][0].transcript;
