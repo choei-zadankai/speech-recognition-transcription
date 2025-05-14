@@ -1,12 +1,8 @@
-// ✅ 読み替えマップ（実際の認識に合わせて調整）
 const conversionMap = {
   "町営": "町栄",
   "長栄": "町栄",
-  "超栄": "町栄",
   "ちょうえい": "町栄",
-  "がっかいか": "学会歌",
-  "がっかい歌": "学会歌",
-  "がっ会歌": "学会歌"
+  "がっかいか": "学会歌"
 };
 
 function applyConversion(text) {
@@ -17,7 +13,6 @@ function applyConversion(text) {
   return text;
 }
 
-// ✅ 音声認識設定
 let recognition;
 let recognizing = false;
 
@@ -38,23 +33,14 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   recognition.onresult = event => {
     let interim = '';
     for (let i = event.resultIndex; i < event.results.length; ++i) {
+      const transcript = event.results[i][0].transcript;
       if (event.results[i].isFinal) {
-        finalTranscript += event.results[i][0].transcript + '。';
+        finalTranscript += applyConversion(transcript) + '。';
       } else {
-        interim += event.results[i][0].transcript;
+        interim += transcript;
       }
     }
-
-    const combined = finalTranscript + interim;
-
-    // ✅ デバッグ表示(F12で表示)
-    console.log("音声認識結果:", event.results);
-    console.log("全文:", finalTranscript);
-    console.log("暫定:", interim);
-    console.log("変換前:", combined);
-
-    // ✅ 読み替えしてから表示
-    transcriptArea.value = applyConversion(combined);
+    transcriptArea.value = finalTranscript + interim;
   };
 
   recognition.onend = () => {
@@ -79,7 +65,6 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   alert("音声認識APIが使えない環境です");
 }
 
-// ✅ 保存ボタンで日付付きファイル名でDL
 saveBtn.onclick = () => {
   const text = transcriptArea.value;
   const blob = new Blob([text], { type: 'text/plain' });
