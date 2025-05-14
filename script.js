@@ -31,17 +31,18 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   let finalTranscript = '';
 
   recognition.onresult = event => {
-    let interim = '';
-    for (let i = event.resultIndex; i < event.results.length; ++i) {
-      const transcript = event.results[i][0].transcript;
-      if (event.results[i].isFinal) {
-        finalTranscript += applyConversion(transcript) + '。';
-      } else {
-        interim += transcript;
-      }
+  let interim = '';
+  for (let i = event.resultIndex; i < event.results.length; ++i) {
+    const transcript = event.results[i][0].transcript;
+    if (event.results[i].isFinal) {
+      finalTranscript += applyConversion(transcript) + '。';
+    } else {
+      interim += transcript;
     }
-    transcriptArea.value = finalTranscript + interim;
-  };
+  }
+
+  transcriptArea.value = finalTranscript + applyConversion(interim);
+};
 
   recognition.onend = () => {
     if (recognizing) recognition.start();
