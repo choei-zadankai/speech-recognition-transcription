@@ -32,4 +32,4 @@ PWA（Progressive Web App）対応で、オフラインでも動作。
 
 ## ライセンス
 
-MIT(LICENSE)
+[MIT](LICENSE)
