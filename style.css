@@ -1,6 +1,7 @@
 body {
   font-family: 'Yu Mincho', 'Hiragino Mincho Pro', serif;
-  background-color: #fdfaf4;
+  background-color: #fdfaf4 !important;
+  background-image: none !important;
   margin: 0;
   padding: 2rem;
   color: #333;
