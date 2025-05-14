@@ -1,3 +1,18 @@
+// ✅ 読み替えマップ
+const conversionMap = {
+  "町営": "町栄",
+  "がっかいか": "学会歌"
+};
+
+function applyConversion(text) {
+  for (const [from, to] of Object.entries(conversionMap)) {
+    const regex = new RegExp(from, 'g');
+    text = text.replace(regex, to);
+  }
+  return text;
+}
+
+// ✅ 音声認識設定
 let recognition;
 let recognizing = false;
 
@@ -24,7 +39,9 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         interim += event.results[i][0].transcript;
       }
     }
-    transcriptArea.value = finalTranscript + interim;
+
+    const combined = finalTranscript + interim;
+    transcriptArea.value = applyConversion(combined);
   };
 
   recognition.onend = () => {
@@ -49,6 +66,7 @@ if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
   alert("音声認識APIが使えない環境です");
 }
 
+// ✅ 保存ボタンで日付付きファイル名でDL
 saveBtn.onclick = () => {
   const text = transcriptArea.value;
   const blob = new Blob([text], { type: 'text/plain' });
